@@ -144,6 +144,8 @@ void KeybUpdateCtrlShiftStatus()
 	g_bShiftKey = (keys[SDLK_LSHIFT] | keys[SDLK_RSHIFT]); // 0x8000 KF_UP   SHIFT
 	g_bCtrlKey  = (keys[SDLK_LCTRL]  | keys[SDLK_RCTRL]);	// CTRL
 	g_bAltKey   = (keys[SDLK_LALT]   | keys[SDLK_RALT]);	// ALT
+
+//	printf("Shift=%d Ctrl=%d Alt=%d\n", g_bShiftKey, g_bCtrlKey, g_bAltKey);
 }
 
 //===========================================================================
@@ -179,28 +181,37 @@ void KeybQueueKeypress (int key, BOOL bASCII)
 		KeybUpdateCtrlShiftStatus();
 		if(g_bShiftKey) 		// SHIFT is pressed
 			switch(key) {
-				case '1': key = '!'; break;
-				case '2': key = '@'; break;
-				case '3': key = '#'; break;
-				case '4': key = '$'; break;
-				case '5': key = '%'; break;
-				case '6': key = '^'; break;
-				case '7': key = '&'; break;
-				case '8': key = '*'; break;
-				case '9': key = '('; break;
-				case '0': key = ')'; break;
-				case '`': key = '~'; break;
-				case '-': key = '_'; break;
-				case '=': key = '+'; break;
-				case '\\': key = '|'; break;
-				case '[': key = '{'; break;
-				case ']': key = '}'; break;
-				case ';': key = ':'; break;
-				case '\'': key = '"'; break;
-				case ',': key = '<'; break;
-				case '.': key = '>'; break;
-				case '/': key = '?'; break;
-				default: 	     break;
+			case '1': key = '!'; break;
+			case '2': key = '"'; break;
+			case '3': key = '#'; break;
+			case '4': key = '$'; break;
+			case '5': key = '%'; break;
+			case '6': key = '&'; break;
+			case '7': key = '/'; break;
+			case '8': key = '('; break;
+			case '9': key = ')'; break;
+			case '0': key = '='; break;
+			case '´': key = '`'; break;
+			case '-': key = '_'; break;
+			case '+': key = '*'; break;
+			case '<': key = '>'; break;
+			case 'y': key = '{'; break;
+			case 'u': key = '['; break;
+			case 'i': key = ']'; break;
+			case 'o': key = '}'; break; 
+			case 'p': key = '\\'; break;
+			case 'q': key = '@'; break;
+			case 'w': key = '^'; break;
+			case 'e': key = '~'; break;
+			case 'r': key = '|'; break;
+			case ',': key = ';'; break;
+			case '.': key = ':'; break;
+			case '^': key = '?'; break;
+			case '\'': key = '?'; break;
+			case '#': key = '\''; break;
+			
+
+			default: 	     break;
 			}
 		else if (g_bCtrlKey) {
 			if(key >= SDLK_a && key <= SDLK_z) key = key - SDLK_a + 1;
@@ -465,7 +476,7 @@ void KeybToggleCapsLock ()
 	{
 		g_bCapsLock = !g_bCapsLock;// never mind real CapsLock status, heh???(GetKeyState(VK_CAPITAL) & 1);
 //		printf("g_bCapsLock=%d\n", g_bCapsLock);
-//		FrameRefreshStatus(DRAW_LEDS);
+		FrameRefreshStatus(DRAW_LEDS);
 	}
 }
 

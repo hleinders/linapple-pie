@@ -1,11 +1,13 @@
 # linapple-pie
-Port of linapple2b optimized for front end usage.
 
-Changes done by Mark Ormond.
+This is a fork of Mark Ormonds Work:
+https://github.com/dabonetn/linapple-pie
 
-Supports mounting and running disks from the command line, and remapping joystick.
-See README-linapple-pie for changes
+and used some code of Bill Chatfields fork (https://github.com/gungwald/applelin)
+of the original linapple Projekt to make the ALT-Keys work as Open-Apple-Key.
+It was too annoying to be unable to leave the Editor in later Merlin8 versions. :-)
 
+Also the keymappings were modified to work better on PC keyboards with german layout.
 
 Visit the original linapple page at
 

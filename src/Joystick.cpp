@@ -315,7 +315,9 @@ BOOL JoyProcessKey (int virtkey, BOOL extended, BOOL down, BOOL autorep)
   if (isALT /*virtkey == VK_MENU*/) // VK_MENU == ALT Key (Button #0 or #1)
   {
     keychange = 1;
-    keydown[JK_OPENAPPLE + (extended != 0)] = down;
+    //keydown[JK_OPENAPPLE + (extended != 0)] = down;
+    keydown[JK_OPENAPPLE] = down;
+    printf("JK_OPENAPPLE=%d extended=%d index=%d\n", JK_OPENAPPLE, extended, JK_OPENAPPLE+(extended!=0));
   }
   else if (!extended)
   {
