@@ -125,7 +125,7 @@ DWORD    joy2axis1 = 1;
 DWORD    joyexitenable = 0;
 DWORD    joyexitbutton0 = 8;
 DWORD    joyexitbutton1 = 9;
-bool           joyquitevent = 0; 
+bool           joyquitevent = 0;
 
 SDL_Joystick *joy1 = NULL;
 SDL_Joystick *joy2 = NULL;
@@ -133,11 +133,11 @@ SDL_Joystick *joy2 = NULL;
 //===========================================================================
 
 void CheckJoyExit()
-{    
+{
     SDL_JoystickUpdate(); // update all joysticks states
     if (SDL_JoystickGetButton(joy1,joyexitbutton0) && SDL_JoystickGetButton(joy1,joyexitbutton1))   joyquitevent = true;
-    else joyquitevent = false;     
-} 
+    else joyquitevent = false;
+}
 
 
 
@@ -299,6 +299,9 @@ void JoyInitialize ()
 
 BOOL JoyProcessKey (int virtkey, BOOL extended, BOOL down, BOOL autorep)
 {
+  if (debug_keyboard == true) {
+    printf("Entering JoyProcessKey: virtkey=%d extended=%d down=%d autorep=%d\n", virtkey, extended, down, autorep);
+  }
   BOOL isALT = ((virtkey == SDLK_LALT) | (virtkey == SDLK_RALT)); //if either ALT key pressed
   if( (joyinfo[joytype[0]].device != DEVICE_KEYBOARD) &&
 	  (joyinfo[joytype[1]].device != DEVICE_KEYBOARD) &&
@@ -317,7 +320,9 @@ BOOL JoyProcessKey (int virtkey, BOOL extended, BOOL down, BOOL autorep)
     keychange = 1;
     //keydown[JK_OPENAPPLE + (extended != 0)] = down;
     keydown[JK_OPENAPPLE] = down;
-    printf("JK_OPENAPPLE=%d extended=%d index=%d\n", JK_OPENAPPLE, extended, JK_OPENAPPLE+(extended!=0));
+    if (debug_keyboard == true) {
+      printf("JK_OPENAPPLE=%d extended=%d index=%d\n", JK_OPENAPPLE, extended, JK_OPENAPPLE+(extended!=0));
+   }
   }
   else if (!extended)
   {

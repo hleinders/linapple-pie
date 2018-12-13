@@ -17,8 +17,9 @@ extern DWORD    joyexitenable;
 extern DWORD    joyexitbutton0;
 extern DWORD    joyexitbutton1;
 extern bool           joyquitevent;
-void CheckJoyExit(); 
+void CheckJoyExit();
 
+extern bool debug_keyboard;
 
 
 void    JoyInitialize ();

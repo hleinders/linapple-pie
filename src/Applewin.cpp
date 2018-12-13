@@ -30,7 +30,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 /*
 
 Linappple-pie was adapted in OCT 2015 for use with Retropie.
-By Mark Ormond. 
+By Mark Ormond.
 */
 
 
@@ -59,6 +59,7 @@ bool argdisks2 = false;
 bool autoboot = false;
 bool fullscreenboot = false;
 bool disablecursor = false;
+bool debug_keyboard = false;
 BOOL      behind            = 0;			// Redundant
 DWORD     cumulativecycles  = 0;			// Wraps after ~1hr 9mins
 DWORD     cyclenum          = 0;			// Used by SpkrToggle() for non-wave sound
@@ -435,18 +436,18 @@ void LoadConfiguration ()
 	  case A2TYPE_APPLE2E:		g_pAppTitle = TITLE_APPLE_2E; break;
 	  case A2TYPE_APPLE2EEHANCED:	g_pAppTitle = TITLE_APPLE_2E_ENHANCED; break;
   }
-// Load Joystick values 
+// Load Joystick values
   joytype[0] = 2;
   joytype[1] = 0;
   LOAD(TEXT("Joystick 0"),&joytype[0]);
   LOAD(TEXT("Joystick 1"),&joytype[1]);
   LOAD(TEXT("Joy0Index"),&joy1index);
   LOAD(TEXT("Joy1Index"),&joy2index);
-    
+
   LOAD(TEXT("Joy0Button1"),&joy1button1);
   LOAD(TEXT("Joy0Button2"),&joy1button2);
   LOAD(TEXT("Joy1Button1"),&joy2button1);
-  
+
   LOAD(TEXT("Joy0Axis0"),&joy1axis0);
   LOAD(TEXT("Joy0Axis1"),&joy1axis1);
   LOAD(TEXT("Joy1Axis0"),&joy2axis0);
@@ -454,11 +455,11 @@ void LoadConfiguration ()
   LOAD(TEXT("JoyExitEnable"),&joyexitenable);
   LOAD(TEXT("JoyExitButton0"),&joyexitbutton0);
   LOAD(TEXT("JoyExitButton1"),&joyexitbutton1);
-  
-  
-  if (joytype[0]==1 ) printf ("Joystick 1 Index # = %i, Name = %s \nButton 1 = %i, Button 2 = %i \nAxis 0 = %i,Axis 1 = %i\n",joy1index,SDL_JoystickName(joy1index),joy1button1, joy1button2,joy1axis0,joy1axis1);   
+
+
+  if (joytype[0]==1 ) printf ("Joystick 1 Index # = %i, Name = %s \nButton 1 = %i, Button 2 = %i \nAxis 0 = %i,Axis 1 = %i\n",joy1index,SDL_JoystickName(joy1index),joy1button1, joy1button2,joy1axis0,joy1axis1);
   if (joytype[1]==1 )printf ("Joystick 2 Index # = %i, Name = %s \nButton 1 = %i \nAxis 0 = %i,Axis 1 = %i\n",joy2index,SDL_JoystickName(joy2index),joy2button1,joy2axis0,joy2axis1);
-  
+
   LOAD(TEXT("Sound Emulation")   ,&soundtype);
 
   DWORD dwSerialPort;
@@ -472,15 +473,15 @@ void LoadConfiguration ()
 //  printf("Video Emulation = %d\n", videotype);
 
   DWORD dwTmp = 0;	// temp var
-	
+
   LOAD(TEXT("Fullscreen") ,&dwTmp);	// load fullscreen flag
   fullscreen = (BOOL) dwTmp;
   if (fullscreenboot) fullscreen = true;
-  
+
   LOAD(TEXT("DisableCursor") ,&dwTmp);	// load Disable Cursor Flag
   disablecursor = (BOOL) dwTmp;
-  
-  
+
+
   dwTmp = 1;
   LOAD(TEXT(REGVALUE_SHOW_LEDS) ,&dwTmp);	// load Show Leds flag
   g_ShowLeds = (BOOL) dwTmp;
@@ -523,7 +524,7 @@ void LoadConfiguration ()
   dwTmp = 0;
   LOAD(TEXT("Boot at Startup") ,&dwTmp);	//
   if ((dwTmp) || (autoboot))
-  
+
   {
 	  // autostart
 	  SDL_Event user_ev;
@@ -531,7 +532,7 @@ void LoadConfiguration ()
 	  user_ev.user.code = 1;	//restart?
 	  SDL_PushEvent(&user_ev);
   }
-  
+
   dwTmp = 0;
   LOAD(TEXT("Slot 6 Autoload") ,&dwTmp);	// load autoinsert for Slot 6 flag
   if(dwTmp &&!autoboot) {
@@ -549,32 +550,32 @@ void LoadConfiguration ()
 		  szHDFilename = NULL;
 	  }
   }
-  else {        
+  else {
 
-        if (argdisks)  { 
+        if (argdisks)  {
                         DoDiskInsert(0, Disk1);
                    }
         else
         {
-      
+
          const char* home = getenv("HOME");
                   std::string MASTER_DISKstr(home);
                   MASTER_DISKstr += "/.linapple/Master.dsk";
                   const char * MasterDiskLocation =  MASTER_DISKstr.c_str();
                   ifstream ifile2 (MasterDiskLocation);
-                   
-                   if (ifile2) { 
+
+                   if (ifile2) {
                                char *MasterDisk= new char[MASTER_DISKstr.length() + 1];
-                               strcpy(MasterDisk, MASTER_DISKstr.c_str()); 
+                               strcpy(MasterDisk, MASTER_DISKstr.c_str());
                                DoDiskInsert(0, MasterDisk);
                                     }
                                 else  {
                                 char *MasterDisk = "Master.dsk";
                                 DoDiskInsert(0, MasterDisk);
                                 }
-             }                  
+             }
         if (argdisks2)  DoDiskInsert(1, Disk2);
-  }           
+  }
   // Load hard disk images and insert it automatically in slot 7
   if(RegLoadString(TEXT("Configuration"), TEXT(REGVALUE_HDD_IMAGE1), 1, &szHDFilename, MAX_PATH))
   {
@@ -812,15 +813,15 @@ int main(int argc, char * lpCmdLine[])
 //	bool bSetFullScreen = false;
 //	bool bBoot = false;
 
-//     
+//
 // Find Home Directory and assign linapple.conf to ~/.linapple/linapple.conf
-// if not found set default name in current directory    
+// if not found set default name in current directory
                   const char* home = getenv("HOME");
                   std::string linappleconfstr(home);
                   linappleconfstr += "/.linapple/linapple.conf";
                   const char * linappleconf = linappleconfstr.c_str();
                   ifstream ifile (linappleconf);
-                  if (ifile) { 
+                  if (ifile) {
                                 registry = fopen(linappleconf , "a+t");	// open conf file (linapple.conf by default)
                   }
                                 else  {
@@ -828,21 +829,21 @@ int main(int argc, char * lpCmdLine[])
                                         }
 
 
-                  
+
 //	spMono = fopen("speakersmono.pcm","wb");
 //	spStereo = fopen("speakersstereo.pcm","wb");
-	
+
 //	LPSTR szImageName_drive1 = NULL; // file names for images of drive1 and drive2
 //	LPSTR szImageName_drive2 = NULL;
 
                   bool bBenchMark = false;
 //	bool bBenchMark = (argc > 1 &&
 //		!strcmp(lpCmdLine[1],"-b"));	// if we should start benchmark (-b in command line string)
- 
-                while ((opt = getopt (argc, lpCmdLine, "1:2:rbhf")) != -1)
+
+                while ((opt = getopt (argc, lpCmdLine, "1:2:rbhfd")) != -1)
                 {
                 switch (opt)
-                       {
+                  {
                     case '1':
                         Disk1 = optarg;
                         argdisks = true;
@@ -859,13 +860,16 @@ int main(int argc, char * lpCmdLine[])
                        printf("benchmark");
                        break;
                     case 'h':
-                       printf("Linapple command options..\n\n -h Show this help message\n -1 Mount disk image in first drive\n -2 Mount disk image in second drive\n -r Auto start emulation\n -b Benchmark and quit\n\n");
-	     return 0;
+                       printf("Linapple command options..\n\n -h Show this help message\n -1 Mount disk image in first drive\n -2 Mount disk image in second drive\n -r Auto start emulation\n -b Benchmark and quit\n -d debug keyboard entries\n\n");
+	     	  				  return 0;
                        break;
                     case 'f':
                         fullscreenboot =true;
                         break;
-	    }
+                    case 'd':
+	                     debug_keyboard = true;
+	                     break;
+	    				 }
                 }
 // I will remake this using getopt and getoptlong!
 /*
@@ -996,7 +1000,7 @@ int main(int argc, char * lpCmdLine[])
 		printf("Could not initialize CURL easy interface");
 		return 1;
 	  }
-    	/* Set user name and password to access FTP server */ 
+    	/* Set user name and password to access FTP server */
 	  curl_easy_setopt(g_curl, CURLOPT_USERPWD, g_sFTPUserPass);
 //
 // just do not see why we need this timer???
@@ -1138,7 +1142,7 @@ int main(int argc, char * lpCmdLine[])
 	fclose(registry); 		//close conf file (linapple.conf by default)
 //	fclose(spMono);
 //	fclose(spStereo);
-	
+
 	SDL_Quit();
 // CURL routines
 	curl_easy_cleanup(g_curl);

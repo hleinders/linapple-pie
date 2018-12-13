@@ -5,6 +5,8 @@ extern bool   g_bCtrlKey;
 extern bool   g_bAltKey;
 //extern bool   g_bCapsLock;
 
+extern bool debug_keyboard;
+
 void    ClipboardInitiatePaste();
 
 void    KeybReset();

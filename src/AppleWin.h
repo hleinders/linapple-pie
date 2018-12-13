@@ -55,6 +55,7 @@ extern CURL *	 g_curl;
 
 
 extern bool       g_bResetTiming;
+extern bool       debug_keyboard;
 extern BOOL       restart;
 
 extern DWORD      g_dwSpeed;

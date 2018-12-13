@@ -145,7 +145,9 @@ void KeybUpdateCtrlShiftStatus()
 	g_bCtrlKey  = (keys[SDLK_LCTRL]  | keys[SDLK_RCTRL]);	// CTRL
 	g_bAltKey   = (keys[SDLK_LALT]   | keys[SDLK_RALT]);	// ALT
 
-//	printf("Shift=%d Ctrl=%d Alt=%d\n", g_bShiftKey, g_bCtrlKey, g_bAltKey);
+	if (debug_keyboard) {
+		printf("Shift=%d Ctrl=%d Alt=%d\n", g_bShiftKey, g_bCtrlKey, g_bAltKey);
+	}
 }
 
 //===========================================================================
@@ -165,6 +167,9 @@ DWORD KeybGetNumQueries ()	// Used in determining 'idleness' of Apple system
 //===========================================================================
 void KeybQueueKeypress (int key, BOOL bASCII)
 {
+	if (debug_keyboard) {
+   	printf("\nKeybQueueKeypress: key=%c,%X bASCII=%d\n", key, key, bASCII);
+	}
 //	static bool bFreshReset; - do not use
 
 	if (bASCII == ASCII)
@@ -198,7 +203,7 @@ void KeybQueueKeypress (int key, BOOL bASCII)
 			case 'y': key = '{'; break;
 			case 'u': key = '['; break;
 			case 'i': key = ']'; break;
-			case 'o': key = '}'; break; 
+			case 'o': key = '}'; break;
 			case 'p': key = '\\'; break;
 			case 'q': key = '@'; break;
 			case 'w': key = '^'; break;
@@ -209,7 +214,7 @@ void KeybQueueKeypress (int key, BOOL bASCII)
 			case '^': key = '?'; break;
 			case '\'': key = '?'; break;
 			case '#': key = '\''; break;
-			
+
 
 			default: 	     break;
 			}
@@ -319,6 +324,9 @@ void KeybQueueKeypress (int key, BOOL bASCII)
 	if(bOverflow)
 		g_nNextOutIdx = (g_nNextOutIdx + 1) % g_nKeyBufferSize;
 #endif
+	if (debug_keyboard) {
+   	printf("key=%c,%X\n\n", key, key);
+	}
 }
 
 //===========================================================================
